@@ -7,6 +7,11 @@ HRMDOCK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 OS="$(uname)"
 CACHE=""
 
+# to have 127.0.0.1 points to host this is usuful if the proxy
+# is setup to be directly the proxy of the host without returning
+# the ip adress of the host
+WITH_LOCAL_PROXY="--network=host" 
+
 # To run the last container
 # docker ps -a --latest
 # docker start -i ID_OF_YOUR_CONTAINER
@@ -45,6 +50,7 @@ hrmdock_build_all() {
         )
     CACHE=--no-cache=true
     echo "CACHE=${CACHE}"
+    echo "PROXY=${PROXY}"
     for name in "${images[@]}";
     do :
         case $name in
@@ -54,7 +60,7 @@ hrmdock_build_all() {
         esac
         echo $directory
         echo "building ${name}:latest in ${directory} ..."
-        docker build ${CACHE} -t ${name}:latest \
+        docker build ${WITH_LOCAL_PROXY} ${CACHE} -t ${name}:latest \
             ${HRMDOCK_DIR}/images/${directory}
     done
 }
@@ -64,7 +70,8 @@ hrmdock_build_latest() {
     hrmdock_load_config
     # CACHE=--no-cache=true
     echo "CACHE=${CACHE}"
-    if docker build ${CACHE} -t ${IMAGE_NAME} \
+    echo "PROXY=${PROXY}"
+    if docker build ${WITH_LOCAL_PROXY} ${CACHE} -t ${IMAGE_NAME} \
         ${HRMDOCK_DIR}/images/${IMAGE_DIRECTORY}; then
         # Do nothing
         echo "Build ${IMAGE_NAME} Done !"
