@@ -44,7 +44,8 @@ RUN echo "-----------------------------------------"
 
 RUN apt-get --yes install \
     libeigen3-dev \
-    coinor-libipopt-dev
+    coinor-libipopt-dev \
+    python3-pip
 
 # [SSH IGNORE]
 
@@ -58,16 +59,15 @@ RUN mkdir -p /workspace
 ##########################################################
 # INSTALL BEWEGO
 
-RUN mkdir -p /ustuttgart && \
-    cd /ustuttgart && \
-    git clone https://github.com/humans-to-robots-motion/pyrieef.git  && \
-    git clone --recursive git@github.com:jmainpri/bewego-car.git
-
-RUN cd pyrieef && \
+RUN mkdir -p /ustuttgart && cd /ustuttgart
+    
+RUN git clone https://github.com/humans-to-robots-motion/pyrieef.git  && \
+    cd pyrieef && \
     pip install -r requirements.txt && \
     cd -
 
-RUN cd bewego && \
+RUN git clone --recursive git@github.com:jmainpri/bewego-car.git && \
+    cd bewego && \
     bash scripts/install_dependencies.sh && \
     mkdir -p build && cd build && \
     cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo \
