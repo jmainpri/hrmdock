@@ -6,11 +6,12 @@ HRMDOCK_FILE=$(basename $BASH_SOURCE)
 HRMDOCK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 OS="$(uname)"
 CACHE=""
+FORWARD_SSH_AGENT="--ssh default"
 
 # to have 127.0.0.1 points to host this is usuful if the proxy
 # is setup to be directly the proxy of the host without returning
 # the ip adress of the host
-WITH_LOCAL_PROXY="--network=host" 
+# WITH_LOCAL_PROXY="--network=host"
 
 # To run the last container
 # docker ps -a --latest
@@ -39,6 +40,7 @@ hrmdock_cd() {
 }
 
 hrmdock_load_config() {
+    export DOCKER_BUILDKIT=1
     source ${HRMDOCK_DIR}/hrmdock.config
 }
 
@@ -71,7 +73,7 @@ hrmdock_build_latest() {
     # CACHE=--no-cache=true
     echo "CACHE=${CACHE}"
     echo "PROXY=${PROXY}"
-    if docker build ${WITH_LOCAL_PROXY} ${CACHE} -t ${IMAGE_NAME} \
+    if docker build ${FORWARD_SSH_AGENT} ${WITH_LOCAL_PROXY} ${CACHE} -t ${IMAGE_NAME} \
         ${HRMDOCK_DIR}/images/${IMAGE_DIRECTORY}; then
         # Do nothing
         echo "Build ${IMAGE_NAME} Done !"
