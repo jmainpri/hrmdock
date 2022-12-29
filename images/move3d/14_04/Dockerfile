@@ -61,8 +61,6 @@ RUN apt-get --yes install \
 
 # [SSH IGNORE]
 
-RUN export MOVE3D_INSTALL_DIR=/workspace/move3d/install
-
 ##########################################################
 # This is then mounted by the user to a shared folder
 
@@ -70,6 +68,9 @@ RUN mkdir -p /workspace
 
 ##########################################################
 # INSTALL MOVE3D
+
+ENV MOVE3D_INSTALL_DIR=/workspace/move3d/install
+
 RUN mkdir -p /move3d && \
     cd /move3d && \
     git clone https://github.com/jmainpri/move3d-launch.git  && \
