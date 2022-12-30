@@ -117,9 +117,11 @@ RUN cd /ustuttgart/bewego && cd build && \
     echo "LIBRARY_PATH : $LIBRARY_PATH" && \
     make -j$(nproc)
 
-# 6) install python viz
+# 6) install python viz and test
 RUN pip3 install pybullet
 RUN pip3 install pyglet==1.5.27
+RUN pip3 install graphviz
+RUN pip3 install cvxopt
 
 # 7) install assets
 RUN cd /ustuttgart && \
