@@ -5,10 +5,10 @@
 HRMDOCK_FILE=$(basename $BASH_SOURCE)
 HRMDOCK_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 OS="$(uname)"
-CACHE=""
+CACHE= # "--no-cache=true"
 FORWARD_SSH_AGENT="--ssh default"
 
-# to have 127.0.0.1 points to host this is usuful if the proxy
+# to have 127.0.0.1 point to host this is usuful if the proxy
 # is setup to be directly the proxy of the host without returning
 # the ip adress of the host
 # WITH_LOCAL_PROXY="--network=host"

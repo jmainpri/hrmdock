@@ -28,29 +28,29 @@ MAINTAINER Jim Mainprice <mainprice@gmail.com>
 # We add all other repositories.
 ################################################################################
 
-RUN apt-get update && \
-    apt-get -y install curl wget
-RUN apt-get update && apt-get install -y software-properties-common
+RUN apt-get --yes update && \
+    apt-get --yes install curl wget
+RUN apt-get update && apt-get install --yes software-properties-common
 
 ########################################################
 # Favoring non interactive installation
 ########################################################
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get --yes update
-RUN apt-get --yes install apt-utils 
-RUN apt-get --yes install git 
-RUN apt-get --yes install sudo 
-RUN apt-get --yes install g++ 
-RUN apt-get --yes install make 
-RUN apt-get --yes install gnupg 
-RUN apt-get --yes install gdb 
-RUN apt-get --yes install cmake
-RUN apt-get --yes install x11-apps 
-RUN apt-get --yes install mesa-utils 
-RUN apt-get --yes install nano 
-RUN apt-get --yes install emacs
-RUN apt-get --yes install lsb-release
+RUN apt-get --yes update &&
+    apt-utils \
+    git \
+    sudo \
+    g++ \
+    make \
+    gnupg \
+    gdb \
+    cmake \
+    x11-apps \
+    mesa-utils \
+    nano \
+    emacs \
+    lsb-release
 
 RUN apt-get update
 # RUN apt-get --yes install terminator 
@@ -62,11 +62,13 @@ RUN echo "-----------------------------------------"
 RUN echo " INSTALL DEPENDENCIES"
 RUN echo "-----------------------------------------"
 
-RUN apt-get --yes install libeigen3-dev
-RUN apt-get --yes install coinor-libipopt-dev
-RUN apt-get --yes install libompl-dev ompl-demos
-RUN apt-get --yes install python3
-RUN apt-get --yes install python3-pip
+RUN apt-get --yes update && \
+    apt-get --yes install libeigen3-dev \
+    coinor-libipopt-dev \
+    libompl-dev ompl-demos \
+    python3 \
+    python3-pip \
+    freeglut3-dev
 
 # [SSH IGNORE]
 
@@ -116,7 +118,12 @@ RUN cd /ustuttgart/bewego && cd build && \
     echo "LIBRARY_PATH : $LIBRARY_PATH" && \
     make -j$(nproc)
 
-# 6) install pybullet
+# 6) install python viz
 RUN pip3 install pybullet
+RUN pip3 install pyglet==1.5.27
+
+# 7) install assets
+RUN cd /ustuttgart && \
+    git clone https://github.com/humans-to-robots-motion/pybullet_robots.git
 
 # [/SSH IGNORE]
